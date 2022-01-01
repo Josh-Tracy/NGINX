@@ -12,14 +12,18 @@ server {
     sub_filter 'server_url' '$request_uri';
     sub_filter 'server_date' '$time_local';
     sub_filter 'request_id' '$request_id';
+    
+    location ~ /status {
+      root /usr/share/nginx/html;
+      try_files /status.html =404;
+   }
 }
 
 server {
     listen              443 ssl;
     server_name         '$hostname';
-    ssl_certificate     www.example.com.crt;
-    ssl_certificate_key www.example.com.key;
+    ssl_certificate     /etc/nginx/tls/local.pem;
+    ssl_certificate_key /etc/nginx/tls/local.key;
     ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
     ssl_ciphers         HIGH:!aNULL:!MD5;
-    ...
 }
